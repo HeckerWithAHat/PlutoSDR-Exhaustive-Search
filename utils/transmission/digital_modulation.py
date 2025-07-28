@@ -12,7 +12,7 @@ def digital_modulation(bits, M):
 
     L = np.log2(M).astype(int) 
     
-    constellation = [i for i in range(-1*int(M - 1), M, 2)]
+    constellation = [i for i in range(-int(M - 1), int(M), 2)]
 
     
     symbols = []
@@ -58,10 +58,3 @@ def digital_demodulation(symbols, M):
         bits += binary
     
     return bits
-
-
-encoded = digital_modulation("101010101010101010101011101010101010101010101011", 16)
-
-decoded = digital_demodulation(encoded, 16)
-
-print("Decoded correctly: ", "101010101010101010101011101010101010101010101011" == decoded)
