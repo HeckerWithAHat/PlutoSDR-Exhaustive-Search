@@ -13,9 +13,10 @@ dependencies:
   - pip
 
   - pip:
-    - ipykernel      # Kernel connector for Jupyter
-    - scipy
+    - ipykernel  
+    - numba
     - numpy
+    - scipy
     - matplotlib
     - galois
-    - cosmos2025
+    - cosmos2025    
