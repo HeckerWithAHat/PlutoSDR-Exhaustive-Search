@@ -13,4 +13,4 @@ from utils.recovery.reedsolomon import decode_rs_erasure
 from utils.recovery.repitition import repetition_encode
 from utils.recovery.repitition import repetition_decode
 
-
+print(huffman_encoding("0100100001011010101010"))
