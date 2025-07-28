@@ -5,6 +5,10 @@ class Node:
         self.left = None
         self.right = None
 def huffman_encoding(text):
+    """
+    Parameters:
+        text - String to be encoded using Huffman coding
+    """
     frequency = __import__('collections').Counter(text)
     nodes = [Node(char, freq) for char, freq in frequency.items()]
     while len(nodes) > 1:
