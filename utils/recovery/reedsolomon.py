@@ -16,7 +16,7 @@ def create_reed_solomon_generator_matrix(k,n, field_size):
             num = pow(j, i, field_size) 
             row.append(num)
         field.append(row)
-    return np.array(field)
+    return np.array(field).T
 
 
 def encode_message(message_bits, field_size=256):
@@ -43,7 +43,7 @@ def encode_message(message_bits, field_size=256):
     
     # Automatically determine k and n
     k = len(message_symbols)
-    n = k + (k // 2)  # Add 50% redundancy for error correction
+    n = k + max(2, k // 2)  # add at least 2 redundant symbols
     
     # Pad message symbols to length k (if needed)
     while len(message_symbols) < k:
