@@ -54,10 +54,10 @@ def encode_message(message_bits, field_size=256):
     message_vector = np.array(message_symbols[:k])
     encoded = np.dot(G, message_vector) % field_size
     
-    return encoded.tolist(), k, n
+    return encoded.tolist()
 
 
-def decode_message(encoded_symbols, field_size=256, original_bit_length=None):
+def decode_message(encoded_symbols, field_size=256, original_bit_length=8):
     """
     Decode Reed-Solomon encoded symbols back to original bit string.
     Parameters:
@@ -147,11 +147,40 @@ def decode_message(encoded_symbols, field_size=256, original_bit_length=None):
 
 
 
+def encode_message_arbitrary(message_bitstring):
+    # Store original length before padding
+    original_length = len(message_bitstring)
+
+    # Pad message to make it length 8
+    while len(message_bitstring) % 8 != 0:
+        message_bitstring += '0'
+
+    pad_length = len(message_bitstring) - original_length
+
+    symbols = [message_bitstring[i:i + 8] for i in range(0, len(message_bitstring), 8)]
+
+    encoded_messages = []
+    for symbol in symbols:
+        encoded_messages.append(encode_message(symbol))
+
+    return encoded_messages, pad_length
+
+
+def decode_message_arbitrary(encoded_messages, pad_length):
+    symbols = [decode_message(i) for i in encoded_messages]
+    bit_string = ''.join(symbols)
+    bit_string = bit_string[:len(bit_string)-pad_length]
+    return bit_string
 
 
 
-encoded, k, n = encode_message("10110101")
+
+
+
+encoded, pad_length = encode_message_arbitrary("10110101011")
 print("Encoded Symbols:", encoded)
+print("Padding Length:", pad_length)
 
-decoded = decode_message(encoded, original_bit_length=len("10110101"))
-print("Decoded Bits:", decoded)
+
+decoded = decode_message_arbitrary(encoded, pad_length)
+print("Decoded Bit String:", decoded)
