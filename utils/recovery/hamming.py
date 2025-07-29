@@ -45,31 +45,51 @@ def create_hamming_code_matrices(r):
     
 def hamming_decode(codeword, H, padding_count):
     """
-    Decode a Hamming codeword and correct single-bit errors.
+    Decode a full Hamming-encoded stream and correct single-bit errors in each codeword block.
     Parameters:
-        codeword: numpy array or list of bits (encoded Hamming codeword)
-        H: Parity-check matrix for the Hamming code
+        codeword: numpy array or list of bits (entire encoded stream)
+        H: Parity-check matrix
+        padding_count: Number of padding bits at the end of the original message
     Returns:
-        corrected_codeword: numpy array of bits (corrected codeword)
+        Decoded and corrected original message bits as a list
     """
-    codeword = np.array(codeword)
-    syndrome = np.dot(codeword, H.T) % 2
-
+    codeword = np.array(list(map(int, list(codeword))))
+    n = H.shape[1]
     r = H.shape[0]
+    k = n - r
 
-    print("Syndrome:", syndrome)
-    if np.all(syndrome == 0):
-        return codeword[r:codeword.size - padding_count]
-    error_position = None
-    for i in range(H.shape[1]):
-        if np.array_equal(syndrome, H[:, i]):
-            error_position = i
-            break
-    if error_position is not None:
-        corrected_codeword = codeword.copy()
-        corrected_codeword[error_position] = 1 - corrected_codeword[error_position]
-        return corrected_codeword[r:corrected_codeword.size - padding_count]
-    return codeword[r:codeword.size - padding_count]
+    corrected_bits = []
+
+    for i in range(0, len(codeword), n):
+        block = codeword[i:i+n]
+        if len(block) < n:
+            break  # Skip incomplete blocks at end (shouldn't occur unless input is malformed)
+
+        H_trans = H.T
+        syndrome = np.dot(block, H_trans) % 2
+
+        # If syndrome is zero, no error
+        if not np.any(syndrome):
+            corrected_block = block
+        else:
+            # Find the position of the error
+            error_position = None
+            for j in range(n):
+                if np.array_equal(H[:, j], syndrome):
+                    error_position = j
+                    break
+            corrected_block = block.copy()
+            if error_position is not None:
+                corrected_block[error_position] ^= 1  # Flip the bit
+
+        corrected_bits.extend(corrected_block[r:])
+
+    # Remove padding
+    if padding_count > 0:
+        corrected_bits = corrected_bits[:-padding_count]
+
+    return corrected_bits
+
 
 
 

@@ -5,4 +5,4 @@ from utils.enums.enums import Compression, Recovery, Constellation, SymbolErrorP
 
 sys.set_int_max_str_digits(0) # Disable the limit on the number of digits in an integer
 
-simulate_local(Compression.HUFFMAN, Recovery.HAMMING, Constellation.QAM8, 0.001, Repitition.R1, "./files/webpage.html")
+simulate_local(Compression.HUFFMAN, Recovery.HAMMING, Constellation.QAM8, Repitition.R1, "./files/text.txt")
