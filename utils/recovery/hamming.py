@@ -7,28 +7,54 @@ def create_hamming_code_matrices(r):
         G - Generator matrix
         H - Parity-check matrix
     """
-    G = np.zeros((2**r-r-1,2**r-1)) 
-    H = np.zeros((r,2**r-1)) 
     n = 2**r - 1  
     k = n - r    
+    
+    # Create H matrix with identity matrix first, then parity columns
+    H = np.zeros((r, n))
+    
+    # Set identity matrix in the first r columns
+    for i in range(r):
+        H[i, i] = 1
+    
+    # Fill remaining columns with binary representations
+    col_idx = r
     for i in range(1, n + 1):
         binary_rep = format(i, f'0{r}b')
-        for j in range(r):
-            H[j, i-1] = int(binary_rep[j])
+        # Skip positions that would create all-zero or identity columns
+        if i != 2**0 and i != 2**1 and i != 2**2 and (r < 4 or i != 2**3) and (r < 5 or i != 2**4):
+            for j in range(r):
+                H[j, col_idx] = int(binary_rep[j])
+            col_idx += 1
+            if col_idx >= n:
+                break
+    
+    # Create G matrix in systematic form [I_k | P]
+    G = np.zeros((k, n))
+    
+    # Identity matrix for information bits (last k columns)
     for i in range(k):
-        G[i, i] = 1
-    parity_positions = [2**i - 1 for i in range(r)] 
-    info_col = 0
-    for col in range(n):
-        if col not in parity_positions:
-            for row in range(r):
-                G[info_col, col] = H[row, col]
-            info_col += 1
+        G[i, r + i] = 1
+    
+    # Parity part (first r columns) - transpose of the parity part of H
+    for i in range(k):
+        for j in range(r):
+            G[i, j] = H[j, r + i]
+    
     return G.astype(int), H.astype(int)
     
 def hamming_decode(codeword, H):
+    """
+    Decode a Hamming codeword and correct single-bit errors.
+    Parameters:
+        codeword: numpy array or list of bits (encoded Hamming codeword)
+        H: Parity-check matrix for the Hamming code
+    Returns:
+        corrected_codeword: numpy array of bits (corrected codeword)
+    """
     codeword = np.array(codeword)
-    syndrome = np.dot(H, codeword) % 2
+    syndrome = np.dot(codeword, H.T) % 2
+    print("Syndrome:", syndrome)
     if np.all(syndrome == 0):
         return codeword
     error_position = None
@@ -45,7 +71,7 @@ def hamming_decode(codeword, H):
 
 
 
-def encode_bitstring_hamming(bitstring, r=3):
+def encode_bitstring_hamming(bitstring):
     """
     Encode a bit string using Hamming code with parameter r.
     
@@ -61,15 +87,20 @@ def encode_bitstring_hamming(bitstring, r=3):
         bits = [int(b) for b in bitstring]
     else:
         bits = list(bitstring)
+
+    r = 0
+    while (2 ** r) < (len(bits) + r + 1):
+        r += 1
     
     # Calculate Hamming code parameters
     n = 2**r - 1  # Code length
     k = n - r     # Information bits per codeword
-    
+    print(f"Using Hamming code with r={r}, n={n}, k={k}")
     # Create generator matrix
-    G, _ = create_hamming_code_matrices(r)
+    G, H = create_hamming_code_matrices(r)
     
     # Pad the bitstring if necessary to make it divisible by k
+    print("Padding:", k - (len(bits) % k))
     while len(bits) % k != 0:
         bits.append(0)
     
@@ -85,5 +116,15 @@ def encode_bitstring_hamming(bitstring, r=3):
         
         # Add to result
         encoded_bits.extend(encoded_block.tolist())
-    
-    return encoded_bits
+
+    return encoded_bits, H
+
+
+coded, H = encode_bitstring_hamming("10011010")
+
+print("Encoded bits:", coded)
+print("Parity-check matrix:\n", H)
+
+
+
+print(''.join(map(str, hamming_decode(coded, H))))
