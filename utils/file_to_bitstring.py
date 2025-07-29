@@ -18,4 +18,20 @@ def file_to_bitstring(filepath: str) -> str:
     except Exception as e:
         print(f"An error occurred: {e}")
         raise e
-    return bitstring
+    return [bitstring, filepath]
+
+def bitstring_to_file(bitstring: str, filepath: str):
+    """
+    Converts a bitstring back to a file.
+    
+    Parameters:
+        bitstring - A string representing the content as a bitstring
+        filepath - Path where the file will be saved
+    """
+    try:
+        with open(filepath, "wb") as f:
+            byte_array = int(bitstring, 2).to_bytes((len(bitstring) + 7) // 8, byteorder='big')
+            f.write(byte_array)
+    except Exception as e:
+        print(f"An error occurred while writing to file: {e}")
+        raise e

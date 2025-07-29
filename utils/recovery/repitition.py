@@ -1,4 +1,4 @@
-def repetition_encode(bitstring, n=3): return ''.join(bit * n for bit in bitstring)
+def repetition_encode(bitstring, n=3): return [''.join(bit * n for bit in bitstring)]
 
 
 def repetition_decode(codeword, n=3):

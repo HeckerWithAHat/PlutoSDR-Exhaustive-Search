@@ -33,7 +33,7 @@ def huffman_encoding(text):
     codes = {}
     generate_codes(root, "", codes)
     encoded_text = "".join(codes[char] for char in text)
-    return encoded_text, root
+    return [encoded_text, root]
 def huffman_decoding(encoded_text, root):
     decoded_text = ""
     node = root

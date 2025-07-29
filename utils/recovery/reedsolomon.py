@@ -37,8 +37,8 @@ def encode_message(message_bits, field_size=256):
     # Split into 8-bit chunks and convert to integers
     message_symbols = []
     for i in range(0, len(message_bits), 8):
-        chunk = message_bits[i:i+8]
-        symbol = int(chunk, 2)
+        symbol = message_bits[i:i+8]
+        
         message_symbols.append(symbol)
     
     # Automatically determine k and n
@@ -52,6 +52,7 @@ def encode_message(message_bits, field_size=256):
     # Create generator matrix and encode
     G = create_reed_solomon_generator_matrix(k, n, field_size)
     message_vector = np.array(message_symbols[:k])
+    print(message_vector)
     encoded = np.dot(G, message_vector) % field_size
     
     return encoded.tolist()
@@ -163,7 +164,7 @@ def encode_message_arbitrary(message_bitstring):
     for symbol in symbols:
         encoded_messages.append(encode_message(symbol))
 
-    return encoded_messages, pad_length
+    return [encoded_messages, pad_length]
 
 
 def decode_message_arbitrary(encoded_messages, pad_length):
@@ -176,11 +177,3 @@ def decode_message_arbitrary(encoded_messages, pad_length):
 
 
 
-
-encoded, pad_length = encode_message_arbitrary("10110101011")
-print("Encoded Symbols:", encoded)
-print("Padding Length:", pad_length)
-
-
-decoded = decode_message_arbitrary(encoded, pad_length)
-print("Decoded Bit String:", decoded)

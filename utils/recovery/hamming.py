@@ -120,15 +120,6 @@ def encode_bitstring_hamming(bitstring):
         # Add to result
         encoded_bits.extend(encoded_block.tolist())
 
-    return encoded_bits, H, padding_count
+    return [encoded_bits, H, padding_count]
 
 
-coded, H, padding_count = encode_bitstring_hamming("10011010")
-
-print("Encoded bits:", coded)
-print("Parity-check matrix:\n", H)
-print("Padding count:", padding_count)
-
-
-
-print(''.join(map(str, hamming_decode(coded, H, padding_count))))
