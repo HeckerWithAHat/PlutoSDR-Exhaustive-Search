@@ -19,6 +19,8 @@ from utils.transmission.digital_modulation import digital_demodulation
 from utils.transmission.create_message import create_message
 from utils.transmission.create_message import decode_message
 
+from utils.file_to_bitstring import file_to_bitstring
+
 from enum import Enum
 import numpy as np
 import sys
@@ -66,17 +68,7 @@ def simulate(Compression: Compression, Recovery: Recovery, Constellation: Conste
         Repitition - Enum value for repetition factor
         filepath - Name of the file to save results
     """
-    bitstring = ""
-    try:
-        with open(filepath, "rb") as f:
-            content = f.read()  # Read the entire file content as bytes
-            bitstring = "".join(f"{byte:08b}" for byte in content)
-    except FileNotFoundError:
-        print(f"Error: File not found at {filepath}")
-        return None
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return None
+    bitstring = file_to_bitstring(filepath)
     print(f"Bitstring: {bitstring}")
     # Compression
     compressed_bits, compression_data = Compression.value[0](bitstring)
