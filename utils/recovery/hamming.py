@@ -43,7 +43,7 @@ def create_hamming_code_matrices(r):
     
     return G.astype(int), H.astype(int)
     
-def hamming_decode(codeword, H):
+def hamming_decode(codeword, H, padding_count):
     """
     Decode a Hamming codeword and correct single-bit errors.
     Parameters:
@@ -54,9 +54,12 @@ def hamming_decode(codeword, H):
     """
     codeword = np.array(codeword)
     syndrome = np.dot(codeword, H.T) % 2
+
+    r = H.shape[0]
+
     print("Syndrome:", syndrome)
     if np.all(syndrome == 0):
-        return codeword
+        return codeword[r:codeword.size - padding_count]
     error_position = None
     for i in range(H.shape[1]):
         if np.array_equal(syndrome, H[:, i]):
@@ -65,8 +68,8 @@ def hamming_decode(codeword, H):
     if error_position is not None:
         corrected_codeword = codeword.copy()
         corrected_codeword[error_position] = 1 - corrected_codeword[error_position]
-        return corrected_codeword
-    return codeword
+        return corrected_codeword[r:corrected_codeword.size - padding_count]
+    return codeword[r:codeword.size - padding_count]
 
 
 
@@ -100,7 +103,7 @@ def encode_bitstring_hamming(bitstring):
     G, H = create_hamming_code_matrices(r)
     
     # Pad the bitstring if necessary to make it divisible by k
-    print("Padding:", k - (len(bits) % k))
+    padding_count = k - (len(bits) % k)
     while len(bits) % k != 0:
         bits.append(0)
     
@@ -117,14 +120,15 @@ def encode_bitstring_hamming(bitstring):
         # Add to result
         encoded_bits.extend(encoded_block.tolist())
 
-    return encoded_bits, H
+    return encoded_bits, H, padding_count
 
 
-coded, H = encode_bitstring_hamming("10011010")
+coded, H, padding_count = encode_bitstring_hamming("10011010")
 
 print("Encoded bits:", coded)
 print("Parity-check matrix:\n", H)
+print("Padding count:", padding_count)
 
 
 
-print(''.join(map(str, hamming_decode(coded, H))))
+print(''.join(map(str, hamming_decode(coded, H, padding_count))))
