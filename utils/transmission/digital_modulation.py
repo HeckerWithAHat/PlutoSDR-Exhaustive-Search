@@ -15,11 +15,11 @@ def digital_modulation(bits, M):
     print("Constellation:", constellation)
     
     symbols = []
-    print(len(bits[0]))
-    for i in range(0, len(bits[0]), L):
+    
+    for i in range(0, len(bits), L):
         startIndex = i
         endIndex = i + L
-        binary = bits[0][startIndex:endIndex]
+        binary = bits[startIndex:endIndex]
         symbol_idx = 0
         
         for bit in binary:

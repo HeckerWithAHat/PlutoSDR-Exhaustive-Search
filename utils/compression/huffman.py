@@ -39,7 +39,7 @@ def huffman_decoding(encoded_text, root):
     decoded_text = ""
     node = root
     for bit in encoded_text:
-        if bit == np.int64(0):
+        if bit == np.int64(0) or bit == '0':
             node = node.left
         else:
             node = node.right

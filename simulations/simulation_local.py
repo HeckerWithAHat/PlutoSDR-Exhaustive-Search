@@ -47,10 +47,8 @@ def simulate_local(Compression: Compression, Recovery: Recovery, Constellation: 
     compressed_bitstring = Compression.value[0](bitstring[0])
     print("Compressed Bitstring:", compressed_bitstring)
     recovery_added_bitstring = Recovery.value[0](compressed_bitstring[0])
-    print("Recovery Added Bitstring:", recovery_added_bitstring[0])
-    print("H:", recovery_added_bitstring[1])
-    print("Padding Count:", recovery_added_bitstring[2])
-    modulated_signal = digital_modulation(recovery_added_bitstring, Constellation.value)
+    print("Recovery Added Bitstring:", recovery_added_bitstring)
+    modulated_signal = digital_modulation(recovery_added_bitstring[0], Constellation.value)
     print("Modulated Signal:", modulated_signal)
     message = create_message(modulated_signal[0], Repitition.value)
     print("Final Message:", message)
@@ -62,6 +60,7 @@ def simulate_local(Compression: Compression, Recovery: Recovery, Constellation: 
     uncovered_bitstring = Recovery.value[1](demodulated_signal, recovery_added_bitstring[1], recovery_added_bitstring[2])
     print("Uncovered Bitstring:", uncovered_bitstring)
     decompressed_bitstring = Compression.value[1](uncovered_bitstring, compressed_bitstring[1])
+    
     print("Decompressed Bitstring:", decompressed_bitstring)
     bitstring_to_file(decompressed_bitstring, "decompressed_output.bin")
 
