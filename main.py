@@ -40,13 +40,37 @@ for compression in Compression:
                     filename_base = f"{compression.name}_{recovery.name}_{constellation.name}_{repetition.name}_{os.path.basename(filepath)}"
 
                     # Create scatter plot
-                    plt.figure(figsize=(10, 6))
-                    plt.scatter(range(len(results)), results)
-                    plt.xlabel('Trial Number')
-                    plt.ylabel('Difference')
-                    plt.title(f'Results for {compression.name}_{recovery.name}_{constellation.name}_{repetition.name}')
+                    import matplotlib.pyplot as plt
+                    total_time = sum(times)
+
+                    # Dual-axis plot
+                    fig, ax1 = plt.subplots(figsize=(10, 6))
+
+                    # Plot Difference (left y-axis)
+                    ax1.set_xlabel('Trial Number')
+                    ax1.set_ylabel('Difference', color='tab:blue')
+                    ax1.scatter(range(len(results)), results, color='tab:blue', label='Difference', alpha=0.7)
+                    ax1.tick_params(axis='y', labelcolor='tab:blue')
+
+                    # Plot Time on second y-axis
+                    ax2 = ax1.twinx()
+                    ax2.set_ylabel('Time (s)', color='tab:orange')
+                    ax2.plot(range(len(times)), times, color='tab:orange', label='Time per Trial', linewidth=2)
+                    ax2.tick_params(axis='y', labelcolor='tab:orange')
+
+                    # Title with total time
+                    plt.title(f'{compression.name}_{recovery.name}_{constellation.name}_{repetition.name}\nTotal Time: {total_time:.2f} s')
+
+                    # Add legends from both axes
+                    lines_1, labels_1 = ax1.get_legend_handles_labels()
+                    lines_2, labels_2 = ax2.get_legend_handles_labels()
+                    plt.legend(lines_1 + lines_2, labels_1 + labels_2, loc='upper right')
+
+                    # Save and close
+                    plt.tight_layout()
                     plt.savefig(f"{filename_base}.png")
                     plt.close()
+
 
                     # Save results to CSV
                     with open(f"{filename_base}.csv", 'w', newline='') as csvfile:
