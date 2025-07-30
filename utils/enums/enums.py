@@ -39,16 +39,10 @@ class Constellation(Enum):
     QAM16 = 16
 
 
-class SymbolErrorProbability(Enum):
-    P0 = 0.01
-    P1 = 0.001
-    P2 = 0.0001
-    P3 = 0.00001
-    P4 = 0.000001
 
 class Repitition(Enum):
     R1 = 2
     R2 = 4
-    R3 = 8
-    R4 = 16
+    R3 = 6
+    R4 = 8
 

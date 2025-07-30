@@ -1,8 +1,10 @@
 from simulations.simulation_local import simulate_local
+from simulations.simulation_SDR import simulate_SDR
+
 import sys
 
-from utils.enums.enums import Compression, Recovery, Constellation, SymbolErrorProbability, Repitition
+from utils.enums.enums import Compression, Recovery, Constellation, Repitition
 
 sys.set_int_max_str_digits(0) # Disable the limit on the number of digits in an integer
 
-simulate_local(Compression.LEMPEL_ZIV, Recovery.REPETITION, Constellation.QAM8, Repitition.R1, "./files/text.txt")
+simulate_SDR(Compression.HUFFMAN, Recovery.HAMMING, Constellation.QAM8, Repitition.R2, "./files/text.txt")

@@ -12,8 +12,8 @@ def digital_modulation(bits, M):
 
     L = np.log2(M).astype(int) 
     constellation = [i for i in range(-int(M - 1), int(M), 2)]
+    constellation = [(x - constellation[0]) / (constellation[-1] - constellation[0]) * (2) - 1 for x in constellation]
     print("Constellation:", constellation)
-    
     symbols = []
     
     for i in range(0, len(bits), L):
@@ -48,7 +48,16 @@ def digital_demodulation(symbols, M):
     L = np.log2(M).astype(int)
     
     constellation = [i for i in range(-1*int(M - 1), M, 2)]
-    
+    constellation = [(x - constellation[0]) / (constellation[-1] - constellation[0]) * (2) - 1 for x in constellation]
+
+
+    # Round each symbol to the nearest constellation point
+    for i in range(len(symbols)):
+        distances = [abs(symbols[i] - c) for c in constellation]
+        nearest_idx = distances.index(min(distances))
+        symbols[i] = constellation[nearest_idx]
+
+
     bits = ""
     
     for symbol in symbols:

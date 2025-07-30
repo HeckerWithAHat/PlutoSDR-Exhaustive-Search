@@ -8,7 +8,7 @@ from utils.file_to_bitstring import file_to_bitstring, bitstring_to_file
 
 import numpy as np
 
-from utils.enums.enums import Compression, Recovery, Constellation, SymbolErrorProbability, Repitition
+from utils.enums.enums import Compression, Recovery, Constellation, Repitition
 
 def simulate_local(Compression: Compression, Recovery: Recovery, Constellation: Constellation, Repitition: Repitition, filepath: str):
     """
@@ -52,7 +52,6 @@ def simulate_local(Compression: Compression, Recovery: Recovery, Constellation: 
     print("Modulated Signal:", modulated_signal)
     message = create_message(modulated_signal[0], Repitition.value)
     print("Final Message:", message)
-
     decoded_message = decode_message(message, Repitition.value)
     print("Decoded Message:", decoded_message)
     demodulated_signal = digital_demodulation(decoded_message, Constellation.value)
@@ -65,48 +64,3 @@ def simulate_local(Compression: Compression, Recovery: Recovery, Constellation: 
     bitstring_to_file(decompressed_bitstring, "decompressed_output.bin")
 
 
-    # system = DigitalCommSystem()
-    # system.set_transmitter(tx)
-    # system.set_receiver(rx)
-    # tx.carrier_frequency = 950e6
-    # rx.carrier_frequency = 950e6
-
-    # system.transmit_signal(message.astype(np.complex64))
-
-    # receive_signal = system.receive_signal()
-
-
-    # # plot transmitted and received signals
-    # plt.figure(figsize=(12, 10))
-    # plt.subplot(2, 1, 1)
-    # plt.plot(np.real(message), color="blue", marker="o", label="Real Transmit")
-    # plt.plot(np.real(receive_signal), color="red", label="Real Receive")
-    # plt.title("Transmit and Receive Signals (Real)")
-    # plt.xlabel("Time Samples")
-    # plt.ylabel("Amplitude")
-    # plt.grid(True)
-    # plt.legend()
-
-    # plt.subplot(2, 1, 2)
-    # plt.plot(np.imag(message), color="blue", marker="o", label="Imaginary Transmit")
-    # plt.plot(np.imag(receive_signal), color="red", label="Imaginary Receive")
-    # plt.title("Transmit and Receive Signals (Imaginary)")
-    # plt.xlabel("Time Samples")
-    # plt.ylabel("Amplitude")
-    # plt.grid(True)
-    # plt.legend()
-
-    # plt.show()
-
-
-    # receive_symbols = receive_signal[sps // 2 :: sps]
-
-    # fig, ax = plt.subplots()
-    # ax.scatter(np.real(receive_symbols), np.imag(receive_symbols), color='blue', label='Received Symbols')
-    # ax.scatter(np.real(message), np.imag(message), color='red', label='Transmitted Symbols', alpha=0.5)
-    # ax.set_title('Received Symbols in Constellation') 
-    # ax.set_xlabel('In-Phase Component')
-    # ax.set_ylabel('Quadrature Component')
-    # plt.show()
-
-    # print("Received Symbols:", receive_symbols)
