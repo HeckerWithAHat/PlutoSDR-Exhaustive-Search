@@ -86,8 +86,9 @@ def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Co
     )  # keep transmit signal below 10,000 samples if possible, roughly around +/-1
 
     # receive from Pluto!
-    receive_signal = system.receive_signal().tolist()
-    print("Received Signal:", receive_signal)
+    receive_signal_numpy = system.receive_signal()
+    receive_signal = receive_signal_numpy.tolist()
+    print("Received Signal:", receive_signal_numpy)
 
 
     demodulated_signal = digital_demodulation(receive_signal, Constellation.value)
@@ -99,4 +100,39 @@ def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Co
     print("Decompressed Bitstring:", decompressed_bitstring)
     bitstring_to_file(decompressed_bitstring, "decompressed_output.bin")
 
+    # Calculate bit differences
+    if len(bitstring[0]) != len(decompressed_bitstring):
+        print(f"Warning: Bitstring lengths differ - Original: {len(bitstring[0])}, Decompressed: {len(decompressed_bitstring)}")
+        min_length = min(len(bitstring[0]), len(decompressed_bitstring))
+        original_bits = bitstring[0][:min_length]
+        decompressed_bits = decompressed_bitstring[:min_length]
+    else:
+        original_bits = bitstring[0]
+        decompressed_bits = decompressed_bitstring
 
+    bit_differences = sum(1 for i in range(len(original_bits)) if original_bits[i] != decompressed_bits[i])
+    print(f"Number of bit differences: {bit_differences}")
+    return bit_differences
+
+
+    # plt.figure(figsize=(12, 10))
+    # plt.subplot(2, 1, 1)
+    # plt.plot(np.real(message), color="blue", marker="o", label="Real Transmit")
+    # plt.plot(np.real(np.array(receive_signal_numpy)), color="red", label="Real Receive")
+    # plt.plot(np.real(np.array(receive_signal)), color="black", label="Real Receive")
+    # plt.title("Transmit and Receive Signals (Real)")
+    # plt.xlabel("Time Samples")
+    # plt.ylabel("Amplitude")
+    # plt.grid(True)
+    # plt.legend()
+
+    # plt.subplot(2, 1, 2)
+    # plt.plot(np.imag(message), color="blue", marker="o", label="Imaginary Transmit")
+    # plt.plot(np.imag(np.array(receive_signal_numpy)), color="red", label="Imaginary Receive")
+    # plt.title("Transmit and Receive Signals (Imaginary)")
+    # plt.xlabel("Time Samples")
+    # plt.ylabel("Amplitude")
+    # plt.grid(True)
+    # plt.legend()
+
+    # plt.show()
