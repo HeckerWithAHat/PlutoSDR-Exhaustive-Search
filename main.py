@@ -12,7 +12,7 @@ sys.set_int_max_str_digits(0) # Disable the limit on the number of digits in an 
 # diff = simulate_SDR(Compression.HUFFMAN, Recovery.HAMMING, Constellation.QAM8, Repitition.R2, "./files/text.txt")
 # print(diff)
 
-files = ["./files/text.txt", "./files/image.jpg", "./files/audio.mp3", "./files/video.gif"]
+files = ["./files/image.jpg", "./files/text.txt", "./files/audio.mp3", "./files/video.gif"]
 
 for compression in Compression:
     for recovery in Recovery:
