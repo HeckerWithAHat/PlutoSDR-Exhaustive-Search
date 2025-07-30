@@ -7,8 +7,8 @@ from utils.compression.huffman import huffman_decoding
 from utils.compression.lempelziv import lempel_ziv_encoding
 from utils.compression.lempelziv import lempel_ziv_decoding
 
-from utils.recovery.reedsolomon import encode_message_arbitrary
-from utils.recovery.reedsolomon import decode_message_arbitrary
+from utils.recovery.reedsolomon import reed_solomon_encode
+from utils.recovery.reedsolomon import reed_solomon_decode
 
 from utils.recovery.repitition import repetition_encode
 from utils.recovery.repitition import repetition_decode
@@ -29,7 +29,7 @@ class Compression(Enum):
 
 class Recovery(Enum):
     HAMMING = (encode_bitstring_hamming, hamming_decode)
-    REED_SOLOMON = (encode_message_arbitrary, decode_message_arbitrary)
+    REED_SOLOMON = (reed_solomon_encode, reed_solomon_decode)
     REPETITION = (repetition_encode, repetition_decode)
 
 class Constellation(Enum):

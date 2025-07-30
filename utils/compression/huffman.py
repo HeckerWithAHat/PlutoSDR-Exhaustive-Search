@@ -1,3 +1,4 @@
+import numpy as np
 class Node:
     def __init__(self, char, freq):
         self.char = char
@@ -38,7 +39,7 @@ def huffman_decoding(encoded_text, root):
     decoded_text = ""
     node = root
     for bit in encoded_text:
-        if bit == "0":
+        if bit == np.int64(0):
             node = node.left
         else:
             node = node.right

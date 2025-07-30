@@ -29,7 +29,7 @@ def digital_modulation(bits, M):
         mapped = constellation[symbol_idx]
 
         symbols.append(mapped)
-    print("Symbols:", symbols)
+    # print("Symbols:", symbols)
 
     return [symbols, M]
 

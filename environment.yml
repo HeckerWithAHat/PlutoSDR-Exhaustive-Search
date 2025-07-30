@@ -19,4 +19,5 @@ dependencies:
     - scipy
     - matplotlib
     - galois
-    - cosmos2025    
+    - cosmos2025
+    - reedsolo
