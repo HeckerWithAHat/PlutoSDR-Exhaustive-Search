@@ -7,7 +7,7 @@ import numpy as np
 
 from utils.enums.enums import Compression, Recovery, Constellation, Repitition
 
-def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Constellation, Repitition: Repitition, filepath: str):
+def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Constellation, Repitition: Repitition, filepath: str,carrier_frequency):
     """
     Simulates the compression and recovery process with the given parameters.
     
@@ -78,8 +78,8 @@ def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Co
     system = DigitalCommSystem()
     system.set_transmitter(tx)
     system.set_receiver(rx)
-    tx.carrier_frequency = 985e6
-    rx.carrier_frequency = 985e6
+    tx.carrier_frequency = carrier_frequency
+    rx.carrier_frequency = carrier_frequency
     # transmit from Pluto!
     system.transmit_signal(
         message
