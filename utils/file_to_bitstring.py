@@ -29,7 +29,7 @@ def bitstring_to_file(bitstring: str, filepath: str):
         filepath - Path where the file will be saved
     """
     try:
-        with open(filepath, "wb") as f:
+        with open(filepath, "xb") as f:
             byte_array = int(bitstring, 2).to_bytes((len(bitstring) + 7) // 8, byteorder='big')
             f.write(byte_array)
     except Exception as e:

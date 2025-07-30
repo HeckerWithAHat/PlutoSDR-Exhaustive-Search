@@ -94,11 +94,14 @@ def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Co
     demodulated_signal = digital_demodulation(receive_signal, Constellation.value)
     # print("Demodulated Signal:", demodulated_signal)
     uncovered_bitstring = Recovery.value[1](demodulated_signal, recovery_added_bitstring[1], recovery_added_bitstring[2])
+    if uncovered_bitstring is None:
+        print("Decoding failed, returning None")
+        return -1
     # print("Uncovered Bitstring:", uncovered_bitstring)
     decompressed_bitstring = Compression.value[1](uncovered_bitstring, compressed_bitstring[1])
     
     # print("Decompressed Bitstring:", decompressed_bitstring)
-    # bitstring_to_file(decompressed_bitstring, "decompressed_output.bin")
+    # bitstring_to_file(decompressed_bitstring, "./recieved_files/" + filepath[8:])
 
     # Calculate bit differences
     if len(bitstring[0]) != len(decompressed_bitstring):
@@ -111,7 +114,7 @@ def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Co
         decompressed_bits = decompressed_bitstring
 
     bit_differences = sum(1 for i in range(len(original_bits)) if original_bits[i] != decompressed_bits[i])
-    print(f"Number of bit differences: {bit_differences}")
+    # print(f"Number of bit differences: {bit_differences}")
     return bit_differences
 
 

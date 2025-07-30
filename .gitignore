@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 # decompressed output
-*.bin
+recieved_files/
 
 # Distribution / packaging
 .Python
