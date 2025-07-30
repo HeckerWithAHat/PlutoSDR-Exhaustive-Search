@@ -37,9 +37,7 @@ def bits_to_bytes(bits: np.ndarray) -> bytes:
     byte_array = np.packbits(bits)
     return byte_array.tobytes()
 
-def text_to_signal(text_path, max_bits=20000):
-    with open(text_path, "r", encoding='utf-8') as f:
-        text = f.read()
+def text_to_signal(text, max_bits=20000):
     byte_data = text.encode('utf-8')
     bitstream = bytes_to_bits(byte_data)
     bitstream = bitstream[:max_bits]
