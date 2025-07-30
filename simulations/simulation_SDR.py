@@ -21,15 +21,15 @@ def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Co
 
 
     bitstring = file_to_bitstring(filepath)
-    print("Original Bitstring:", bitstring)
+    # print("Original Bitstring:", bitstring)
     compressed_bitstring = Compression.value[0](bitstring[0])
-    print("Compressed Bitstring:", compressed_bitstring)
+    # print("Compressed Bitstring:", compressed_bitstring)
     recovery_added_bitstring = Recovery.value[0](compressed_bitstring[0])
-    print("Recovery Added Bitstring:", recovery_added_bitstring)
+    # print("Recovery Added Bitstring:", recovery_added_bitstring)
     modulated_signal = digital_modulation(recovery_added_bitstring[0], Constellation.value)
     import numpy as np
     message = np.array(modulated_signal[0])
-    print("Final Message:", message)
+    # print("Final Message:", message)
 
 
     # -----------------------------------------------------
@@ -88,17 +88,17 @@ def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Co
     # receive from Pluto!
     receive_signal_numpy = system.receive_signal()
     receive_signal = receive_signal_numpy.tolist()
-    print("Received Signal:", receive_signal_numpy)
+    # print("Received Signal:", receive_signal_numpy)
 
 
     demodulated_signal = digital_demodulation(receive_signal, Constellation.value)
-    print("Demodulated Signal:", demodulated_signal)
+    # print("Demodulated Signal:", demodulated_signal)
     uncovered_bitstring = Recovery.value[1](demodulated_signal, recovery_added_bitstring[1], recovery_added_bitstring[2])
-    print("Uncovered Bitstring:", uncovered_bitstring)
+    # print("Uncovered Bitstring:", uncovered_bitstring)
     decompressed_bitstring = Compression.value[1](uncovered_bitstring, compressed_bitstring[1])
     
-    print("Decompressed Bitstring:", decompressed_bitstring)
-    bitstring_to_file(decompressed_bitstring, "decompressed_output.bin")
+    # print("Decompressed Bitstring:", decompressed_bitstring)
+    # bitstring_to_file(decompressed_bitstring, "decompressed_output.bin")
 
     # Calculate bit differences
     if len(bitstring[0]) != len(decompressed_bitstring):

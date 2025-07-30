@@ -19,14 +19,16 @@ for compression in Compression:
         for constellation in Constellation:
             for repetition in Repitition:
                 for filepath in files:
+                    print(f"Running simulation for {compression.name}, {recovery.name}, {constellation.name}, {repetition.name} on {filepath}")
                     results = []
-                    for _ in range(100):
-                        diff = simulate_SDR(compression, recovery, constellation, repetition, filepath)
+                    for i in range(100):
+                        print(f"Trial {i+1}")
+                        diff = simulate_SDR(compression, recovery, constellation, repetition, filepath, 985e6)
                         results.append(diff)
                     import matplotlib.pyplot as plt
 
                     # Create filename base
-                    filename_base = f"{compression.name}_{recovery.name}_{constellation.name}_{repetition.name}_text"
+                    filename_base = f"{compression.name}_{recovery.name}_{constellation.name}_{repetition.name}_{os.path.basename(filepath)}"
 
                     # Create scatter plot
                     plt.figure(figsize=(10, 6))
