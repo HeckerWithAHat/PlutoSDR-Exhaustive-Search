@@ -6,6 +6,7 @@ import sys
 from utils.enums.enums import Compression, Recovery, Constellation, Repitition
 import csv
 import os
+import time
 
 sys.set_int_max_str_digits(0) # Disable the limit on the number of digits in an integer
 
@@ -21,10 +22,18 @@ for compression in Compression:
                 for filepath in files:
                     print(f"Running simulation for {compression.name}, {recovery.name}, {constellation.name}, {repetition.name} on {filepath}")
                     results = []
+                    times = []
                     for i in range(100):
                         print(f"Trial {i+1}")
+                        start_time = time.time()
                         diff = simulate_SDR(compression, recovery, constellation, repetition, filepath, 985e6)
+                        end_time = time.time()
+                        duration = end_time - start_time
+
+                        times.append(duration)
                         results.append(diff)
+
+
                     import matplotlib.pyplot as plt
 
                     # Create filename base
@@ -42,6 +51,6 @@ for compression in Compression:
                     # Save results to CSV
                     with open(f"{filename_base}.csv", 'w', newline='') as csvfile:
                         writer = csv.writer(csvfile)
-                        writer.writerow(['Trial', 'Difference'])
-                        for i, result in enumerate(results):
-                            writer.writerow([i, result])
+                        writer.writerow(['Trial', 'Difference', 'Time (s)'])
+                        for i, (result, duration) in enumerate(zip(results, times)):
+                            writer.writerow([i, result, duration])
