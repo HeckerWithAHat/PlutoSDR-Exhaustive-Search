@@ -5,10 +5,41 @@ import matplotlib.cm as cm
 import itertools
 import os
 import math
+import warnings
 
-from yaml import warnings
+
 
 markers = itertools.cycle(('o', 's', 'v', '^', '<', '>', 'd', 'P', '*', 'X', 'h'))
+
+warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+def closest_to_origin(csv_path):
+    closest_row = None
+    min_distance = float('inf')
+
+    with open(csv_path, 'r') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            try:
+                time = float(row['Average_Time'])
+                error = float(row['Average_Bits_In_Error'])
+
+                if time < 0 or error < 0:
+                    continue
+
+                distance = math.sqrt(time ** 2 + error ** 2)
+                if distance < min_distance:
+                    min_distance = distance
+                    closest_row = {
+                        'Combination': row['Combination'],
+                        'Average_Time': time,
+                        'Average_Bits_In_Error': error,
+                        'Distance': distance
+                    }
+            except ValueError:
+                continue 
+
+    return closest_row
 
 
 def create_scatter_plot(csv_file_path, graph_title):
@@ -20,6 +51,10 @@ def create_scatter_plot(csv_file_path, graph_title):
         csv_file_path (str): Path to the CSV file
         graph_title (str): Title for the graph
     """
+    print("Closest to (0,0):", closest_to_origin(csv_file_path)['Combination'])
+
+
+    print(f"Creating scatter plot for {csv_file_path}...")
     # Read the CSV file
     with open(csv_file_path, 'r') as csvfile:
         file_results = csv.reader(csvfile)
@@ -32,16 +67,7 @@ def create_scatter_plot(csv_file_path, graph_title):
         y_values = [float(result[2]) if float(result[2]) != -1 else None for result in file_results]
         labels = [result[0] for result in file_results]
 
-        smallest_method_index = 0
 
-        for i in range(1, len(labels)):
-            if y_values[i] is None or x_values[i] is None:
-                continue
-            best_distance = math.sqrt(x_values[i]**2 + y_values[i]**2)
-            if best_distance > math.sqrt(x_values[smallest_method_index]**2 + y_values[smallest_method_index]**2):
-                smallest_method_index = i
-
-        print(f"Best method: {labels[smallest_method_index]} with distance {math.sqrt(x_values[smallest_method_index]**2 + y_values[smallest_method_index]**2)}")
         # warnings.filterwarnings("ignore", category=DeprecationWarning)
         # Use colormap with enough distinct colors
         cmap = cm.get_cmap('tab20', len(labels))
@@ -61,6 +87,21 @@ def create_scatter_plot(csv_file_path, graph_title):
         # Place legend outside plot
         plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), fontsize='x-small', ncol=2)
         plt.tight_layout()
-        plt.show()
+        plt.show(block=False)
 
+
+
+
+print("======")
+print("IMAGE")
+print("======")
 create_scatter_plot('./recieved_files/small_image.jpg_performance.csv', 'Performance Analysis of A JPG Image')
+print("======")
+print("TEXT")
+print("======")
+create_scatter_plot('./recieved_files/text.txt_performance.csv', 'Performance Analysis of A Text File')
+print("======")
+print("HTML")
+print("======")
+create_scatter_plot('./recieved_files/webpage.html_performance.csv', 'Performance Analysis of A HTML File')
+input("Press Enter to exit...")
