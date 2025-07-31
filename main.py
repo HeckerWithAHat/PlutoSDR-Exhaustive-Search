@@ -41,11 +41,10 @@ for filepath in files:
                         end_time = time.time()
                         execution_time = end_time - start_time
                         print(f"Trial {i+1} - Difference: {diff}, Execution Time: {execution_time}")
-                        if diff >= 0:
+                        if diff >=0 and execution_time >= 0:
                             results.append(diff)
-                        if execution_time >= 0:
                             times.append(execution_time)
-                    
+
                     # Calculate averages
                     avg_diff = -1
                     if len(results) != 0:
