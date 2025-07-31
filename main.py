@@ -29,11 +29,11 @@ for filepath in files:
                     results = []
                     times = []
                     
-                    for i in range(1):
+                    for i in range(20):
                         print(f"Trial {i+1} Start")
                         start_time = time.time()
                         diff = simulate_SDR(compression, recovery, constellation, repetition, filepath, 985e6)
-                        exit()
+                        # exit()
                         end_time = time.time()
                         execution_time = end_time - start_time
                         print(f"Trial {i+1} - Difference: {diff}, Execution Time: {execution_time}")

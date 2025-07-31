@@ -43,14 +43,13 @@ def lempel_ziv_encoding(raw_text):
         i = j
     return [format(int(main_output), 'b'), 0]
 
-def lempel_ziv_decoding(encoded_text, _):
+def lempel_ziv_decoding(encoded_text, a):
     decoding = {}
     decoded_output = ""
     i = 0
     dict_index = 1
     encoded_text = ''.join(list(map(str, encoded_text)))
     encoded_text = str(int(encoded_text, 2))
-
     while i < len(encoded_text):
         length_of_index = int(encoded_text[i])
         i += 1
@@ -61,20 +60,18 @@ def lempel_ziv_decoding(encoded_text, _):
             decoding[dict_index] = char
             dict_index += 1
         else:
-            if i + length_of_index <= len(encoded_text):
-                index = int(encoded_text[i:i + length_of_index])
-                i += length_of_index
-            else:
-                break
+            index = int(encoded_text[i:i + length_of_index])
+            i += length_of_index
+
             if i < len(encoded_text):
                 char = encoded_text[i]
                 i += 1
                 if index == 0:
                     string = char
                 else:
-                    string = decoding.get(index, "") + char
+                    string = decoding[index] + char
             else:
-                string = decoding.get(index, "")
+                string = decoding[index]
 
             decoded_output += string
             decoding[dict_index] = string
