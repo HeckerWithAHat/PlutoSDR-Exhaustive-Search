@@ -29,14 +29,20 @@ class Compression(Enum):
 
 class Recovery(Enum):
     REPETITION = (repetition_encode, repetition_decode)
+
     HAMMING = (encode_bitstring_hamming, hamming_decode)
+
+
+
+
     REED_SOLOMON = (reed_solomon_encode, reed_solomon_decode)
 
 class Constellation(Enum):
+    QAM16 = 16
     QAM2 = 2
     QAM4 = 4    
     QAM8 = 8
-    QAM16 = 16
+    
 
 
 

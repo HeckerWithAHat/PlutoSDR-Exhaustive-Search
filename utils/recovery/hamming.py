@@ -88,6 +88,9 @@ def hamming_decode(codeword, H, padding_count):
     if padding_count > 0:
         corrected_bits = corrected_bits[:-padding_count]
 
+    # Convert to list of bits
+    corrected_bits = ''.join([str(int(bit)) for bit in corrected_bits])
+
     return corrected_bits
 
 
