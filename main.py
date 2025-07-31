@@ -13,7 +13,7 @@ import matplotlib.cm as cm
 
 sys.set_int_max_str_digits(0) # Disable the limit on the number of digits in an integer
 
-files = ["./files/text.txt", "./files/small_image.jpg", "./files/webpage.html"]
+files = ["./files/small_image.jpg", "./files/text.txt", "./files/webpage.html"]
 
 # Dictionary to store results for each file
 file_results = {}
@@ -25,11 +25,12 @@ for filepath in files:
         for recovery in Recovery:
             for constellation in Constellation:
                 for repetition in Repitition:
+                    print("="* 163)
                     print(f"Running simulation for {compression.name}, {recovery.name}, {constellation.name}, {repetition.name} on {filepath}")
                     results = []
                     times = []
                     
-                    for i in range(20):
+                    for i in range(1):
                         print(f"Trial {i+1} Start")
                         start_time = time.time()
                         try:
@@ -37,10 +38,13 @@ for filepath in files:
                         except Exception as e:
                             print(f"Error during simulation: {e}")
                             continue  # Skip to the next trial if an error occurs
-                        # exit()
+                        
                         end_time = time.time()
                         execution_time = end_time - start_time
                         print(f"Trial {i+1} - Difference: {diff}, Execution Time: {execution_time}")
+
+                        if i != 19: print("="*81)
+                        # exit()
                         if diff >=0 and execution_time >= 0:
                             results.append(diff)
                             times.append(execution_time)

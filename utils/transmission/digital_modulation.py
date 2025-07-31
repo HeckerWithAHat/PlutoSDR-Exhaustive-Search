@@ -9,11 +9,11 @@ def digital_modulation(bits, M):
         pass
     else:
         raise ValueError("M is not a Power of 2")
-
+    bits = ''.join(list(map(str, bits))) if isinstance(bits, list) else bits  # Ensure bits is a string
     L = np.log2(M).astype(int) 
     constellation = [i for i in range(-int(M - 1), int(M), 2)]
     constellation = [(x - constellation[0]) / (constellation[-1] - constellation[0]) * (2) - 1 for x in constellation]
-    print("Constellation:", constellation)
+    # print("Constellation:", constellation)
     symbols = []
     
     for i in range(0, len(bits), L):

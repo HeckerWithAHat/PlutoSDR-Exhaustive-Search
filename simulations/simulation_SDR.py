@@ -23,7 +23,7 @@ def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Co
     # print("Original Bitstring:", bitstring)
     compressed_bitstring = Compression.value[0](bitstring[0])
     # print("Compressed Bitstring:", compressed_bitstring)
-    recovery_added_bitstring = Recovery.value[0](compressed_bitstring[0])
+    recovery_added_bitstring = Recovery.value[0](compressed_bitstring)
     # print("Recovery Added Bitstring:", recovery_added_bitstring)
     modulated_signal = digital_modulation(recovery_added_bitstring[0], Constellation.value)
     import numpy as np
@@ -97,7 +97,7 @@ def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Co
         print("Decoding failed, returning None")
         return -1
     # print("Uncovered Bitstring:", uncovered_bitstring)
-    decompressed_bitstring = Compression.value[1](uncovered_bitstring, compressed_bitstring[1])
+    decompressed_bitstring = Compression.value[1](uncovered_bitstring)
     
     # print("Decompressed Bitstring:", decompressed_bitstring)
     # bitstring_to_file(decompressed_bitstring, "./recieved_files/" + filepath[8:])
@@ -105,14 +105,19 @@ def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Co
     # Calculate bit differences
     if len(bitstring[0]) != len(decompressed_bitstring):
         print(f"Warning: Bitstring lengths differ - Original: {len(bitstring[0])}, Decompressed: {len(decompressed_bitstring)}")
-        min_length = min(len(bitstring[0]), len(decompressed_bitstring))
-        original_bits = bitstring[0][:min_length]
-        decompressed_bits = decompressed_bitstring[:min_length]
+        return -1
+        # min_length = min(len(bitstring[0]), len(decompressed_bitstring))
+        # original_bits = bitstring[0][:min_length]
+        # decompressed_bits = decompressed_bitstring[:min_length]
     else:
         original_bits = bitstring[0]
         decompressed_bits = decompressed_bitstring
 
-    bit_differences = sum(1 for i in range(len(original_bits)) if original_bits[i] != decompressed_bits[i])
+    if len(original_bits) == len(decompressed_bits):
+        bit_differences = sum(1 for i in range(len(decompressed_bits)) if original_bits[i] != decompressed_bits[i])
+    else:
+        bit_differences = -1
+        print("HI there")
     # print(f"Number of bit differences: {bit_differences}")
     return bit_differences
 

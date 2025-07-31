@@ -24,13 +24,13 @@ from utils.file_to_bitstring import file_to_bitstring
 from enum import Enum
 
 class Compression(Enum):
-    LEMPEL_ZIV = (lempel_ziv_encoding, lempel_ziv_decoding)
     HUFFMAN = (huffman_encoding, huffman_decoding)
+    LEMPEL_ZIV = (lempel_ziv_encoding, lempel_ziv_decoding)
 
 class Recovery(Enum):
+    REED_SOLOMON = (reed_solomon_encode, reed_solomon_decode)
     REPETITION = (repetition_encode, repetition_decode)
     HAMMING = (encode_bitstring_hamming, hamming_decode)
-    REED_SOLOMON = (reed_solomon_encode, reed_solomon_decode)
 
 class Constellation(Enum):
     PAM2 = 2

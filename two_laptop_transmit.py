@@ -111,16 +111,16 @@ from utils.file_to_bitstring import file_to_bitstring, bitstring_to_file
 
 def transmit_image(filepath:str):
     bitstring = image_to_bits(filepath)
-    print("Bitstring Length:", [''.join(map(str, bitstring[0].tolist()))])
-    # print("Original Bitstring:", bitstring)
-    # compressed_bitstring = Compression.LEMPEL_ZIV.value[0](bitstring[0])
-    # print("Compressed Bitstring:", compressed_bitstring)
-    # recovery_added_bitstring = Recovery.REPETITION.value[0](bitstring[0])
-    # print("Recovery Added Bitstring:", recovery_added_bitstring)
-    modulated_signal = digital_modulation(bitstring[0], Constellation.PAM4.value)
+    bitstring = [''.join(map(str, bitstring[0].tolist()))]
+    print("Original Bitstring:", bitstring)
+    compressed_bitstring = Compression.HUFFMAN.value[0](bitstring[0])
+    print("Compressed Bitstring:", compressed_bitstring)
+    recovery_added_bitstring = Recovery.REPETITION.value[0](compressed_bitstring)
+    print("Recovery Added Bitstring:", recovery_added_bitstring[0])
+    modulated_signal = digital_modulation(recovery_added_bitstring[0], Constellation.PAM4.value)
     
     message = np.array(modulated_signal[0])
-
+    print("Modulated Signal:", message)
    
 
 

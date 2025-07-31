@@ -227,10 +227,10 @@ def recieve_image(filepath_to_save):
     print("Received Signal:", receive_signal)
     demodulated_signal = digital_demodulation(receive_signal, modulation_order)
     print("Demodulated Signal:", demodulated_signal)
-    # uncovered_bitstring = Recovery.REPETITION.value[1](demodulated_signal, 0, 0)
-    # print("Uncovered Bitstring:", uncovered_bitstring)
-    # decompressed_bitstring = Compression.LEMPEL_ZIV.value[1](uncovered_bitstring, 0)
-    bits_to_image(list(map(int, list(demodulated_signal))), (32,32)).save(filepath_to_save)
+    uncovered_bitstring = Recovery.REPETITION.value[1](demodulated_signal, 0, 0)
+    print("Uncovered Bitstring:", uncovered_bitstring)
+    decompressed_bitstring = Compression.LEMPEL_ZIV.value[1](uncovered_bitstring, 0)
+    bits_to_image(list(map(int, list(decompressed_bitstring))), (32,32)).save(filepath_to_save)
 
 
 

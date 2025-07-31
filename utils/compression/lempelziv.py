@@ -41,9 +41,9 @@ def lempel_ziv_encoding(raw_text):
             dict_index += 1
             j = i + 1
         i = j
-    return [format(int(main_output), 'b'), 0]
+    return format(int(main_output), 'b')
 
-def lempel_ziv_decoding(encoded_text, a):
+def lempel_ziv_decoding(encoded_text):
     decoding = {}
     decoded_output = ""
     i = 0
