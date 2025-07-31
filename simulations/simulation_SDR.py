@@ -1,5 +1,4 @@
-from utils.transmission.digital_modulation import digital_modulation
-from utils.transmission.digital_modulation import digital_demodulation
+from utils.transmission.digital_modulation import digital_modulation, digital_demodulation
 
 from utils.file_to_bitstring import file_to_bitstring, bitstring_to_file
 
