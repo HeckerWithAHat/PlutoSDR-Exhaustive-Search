@@ -32,7 +32,11 @@ for filepath in files:
                     for i in range(20):
                         print(f"Trial {i+1} Start")
                         start_time = time.time()
-                        diff = simulate_SDR(compression, recovery, constellation, repetition, filepath, 985e6)
+                        try:
+                            diff = simulate_SDR(compression, recovery, constellation, repetition, filepath, 985e6)
+                        except Exception as e:
+                            print(f"Error during simulation: {e}")
+                            continue  # Skip to the next trial if an error occurs
                         # exit()
                         end_time = time.time()
                         execution_time = end_time - start_time
@@ -41,8 +45,12 @@ for filepath in files:
                         times.append(execution_time)
                     
                     # Calculate averages
-                    avg_diff = sum(results) / len(results)
-                    avg_time = sum(times) / len(times)
+                    avg_diff = -1
+                    if len(results) != 0:
+                        avg_diff = sum(results) / len(results)
+                    avg_time = -1
+                    if len(times) != 0:
+                        avg_time = sum(times) / len(times)
                     
                     # Store result for this combination
                     file_results[filepath].append({
