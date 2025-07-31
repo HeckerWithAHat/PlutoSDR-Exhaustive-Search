@@ -30,6 +30,14 @@ def closest_to_origin(csv_path):
     return closest_row
 
 if __name__ == "__main__":
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
     print("======")
     print("IMAGE")
     print("======")
@@ -65,3 +73,12 @@ if __name__ == "__main__":
             print(f"{key}: {value}")
     else:
         print("No valid data found.")
+    
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
