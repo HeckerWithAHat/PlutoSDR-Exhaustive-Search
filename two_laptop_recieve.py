@@ -225,11 +225,12 @@ def recieve_image(filepath_to_save):
     rx.set_gain(30)
     receive_signal = rx.receive_signal().tolist()
     print("Received Signal:", receive_signal)
-    demodulated_signal = digital_demodulation(receive_signal, modulation_order)
+    demodulated_signal = digital_demodulation(receive_signal, Constellation.PAM4.value)
     print("Demodulated Signal:", demodulated_signal)
     uncovered_bitstring = Recovery.REPETITION.value[1](demodulated_signal, 0, 0)
     print("Uncovered Bitstring:", uncovered_bitstring)
-    decompressed_bitstring = Compression.LEMPEL_ZIV.value[1](uncovered_bitstring, 0)
+    decompressed_bitstring = Compression.HUFFMAN.value[1](uncovered_bitstring)
+    print("Decompressed Bitstring:", decompressed_bitstring)
     bits_to_image(list(map(int, list(decompressed_bitstring))), (32,32)).save(filepath_to_save)
 
 

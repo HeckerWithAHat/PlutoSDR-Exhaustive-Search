@@ -145,7 +145,7 @@ def transmit_image(filepath:str):
         rx_gain=100
     )
     config.sample_rate = fs
-    config.sps = 10
+    config.sps = Repitition.R2.value
 
     config.save_to_file(Path(__file__).parent / "system_config.json")
 
