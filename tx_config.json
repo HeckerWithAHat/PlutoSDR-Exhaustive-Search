@@ -14,10 +14,10 @@
     "pulse_shape_span": 23,
     "carrier_frequency": 985000000.0,
     "tx_gain": 100,
-    "rx_gain": 100,
+    "rx_gain": 30,
     "rx_buffer_size": 2000000,
     "n_stf_ptf_zero_syms": 300,
     "tx_zero_pad_len": 300,
-    "tx_sym_len": 15670,
+    "tx_sym_len": 4180,
     "tx_sym_is_real": true
 }
