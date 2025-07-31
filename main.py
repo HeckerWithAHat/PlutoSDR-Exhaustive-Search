@@ -8,6 +8,8 @@ from utils.enums.enums import Compression, Recovery, Constellation, Repitition
 import csv
 import os
 import matplotlib.pyplot as plt
+import itertools
+import matplotlib.cm as cm
 
 sys.set_int_max_str_digits(0) # Disable the limit on the number of digits in an integer
 
@@ -49,25 +51,34 @@ for filepath in files:
                         'avg_time': avg_time
                     })
 
-# Create one scatter plot for each file
+# Use a repeating cycle of markers
+markers = itertools.cycle(('o', 's', 'v', '^', '<', '>', 'd', 'P', '*', 'X', 'h'))
+
 for filepath in files:
-    plt.figure(figsize=(12, 8))
-    
+    plt.figure(figsize=(14, 10))
+
     x_values = [result['avg_time'] for result in file_results[filepath]]
     y_values = [result['avg_diff'] for result in file_results[filepath]]
     labels = [result['combination'] for result in file_results[filepath]]
-    
-    plt.scatter(x_values, y_values)
+
+    # Use colormap with enough distinct colors
+    cmap = cm.get_cmap('tab20', len(labels))
+
+    for i in range(len(labels)):
+        color = cmap(i % cmap.N)
+        marker = next(markers)
+        plt.scatter(x_values[i], y_values[i], color=color, label=labels[i], marker=marker, s=50)
+
     plt.xlabel('Average Execution Time (seconds)')
     plt.ylabel('Average Bits in Error')
     plt.title(f'Performance Analysis for {os.path.basename(filepath)}')
-    
-    # Optional: Add labels to points (might be crowded)
-    # for i, label in enumerate(labels):
-    #     plt.annotate(label, (x_values[i], y_values[i]), fontsize=8)
-    
+
+    # Place legend outside plot
+    plt.legend(loc='center left', bbox_to_anchor=(1.0, 0.5), fontsize='x-small', ncol=1)
+    plt.tight_layout()
+
     filename = f"./recieved_files/{os.path.basename(filepath)}_performance.png"
-    plt.savefig(filename)
+    plt.savefig(filename, bbox_inches='tight')  # Ensure legend is not cut off
     plt.close()
     
     # Save results to CSV for each file
