@@ -67,8 +67,9 @@ img = np.array(img)
 bits = np.unpackbits(img)
 bits = np.unpackbits(img)
 before_encode = bits
-encoded_bits = Recovery.REED_SOLOMON.value[0](''.join(map(str, bits)))
-len_og = encoded_bits[1]
+encoded_bits = Recovery.HAMMING.value[0](''.join(map(str, bits)))
+second_param = encoded_bits[1]
+third_param = encoded_bits[2]
 encoded_bits = encoded_bits[0]
 bits = np.array(list(map(int, list(encoded_bits))))
 print(bits)
@@ -108,7 +109,7 @@ det_rx_syms = det_rx_syms_shuffled
 # Demap symbols to bits
 rx_bits = qam_demapper(det_rx_syms, padding, constellation)
 print(type(rx_bits))
-uncoded_bits = Recovery.REED_SOLOMON.value[1](''.join(map(str, rx_bits)), len_og , 0)
+uncoded_bits = Recovery.HAMMING.value[1](''.join(map(str, rx_bits)), second_param, third_param)
 rx_bits = np.array(list(uncoded_bits))
 
 print("")
