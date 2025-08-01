@@ -18,7 +18,7 @@ def reed_solomon_encode(bitstring: str) -> bytes:
     Returns:
         Encoded data as bytes (original data + ECC)
     """
-    rsc = RSCodec(10)
+    rsc = RSCodec(100)
     data_bytes = bits_to_bytes(bitstring)
     encoded = rsc.encode(data_bytes)
     return [bytes_to_bits(encoded), len(bitstring), 0]
@@ -36,7 +36,7 @@ def reed_solomon_decode(encoded_data: str, original_length: int, _) -> str:
     """
     try:
         encoded_data = bits_to_bytes(encoded_data)
-        rsc = RSCodec(10)
+        rsc = RSCodec(100)
         decoded = rsc.decode(encoded_data)[0]  # Returns (data, ecc)
         return bytes_to_bits(decoded)[:original_length]  # Return only the original length of bits
     except Exception as e:
