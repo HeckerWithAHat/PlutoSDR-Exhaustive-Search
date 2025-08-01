@@ -18,6 +18,6 @@
     "rx_buffer_size": 2000000,
     "n_stf_ptf_zero_syms": 300,
     "tx_zero_pad_len": 300,
-    "tx_sym_len": 10144,
+    "tx_sym_len": 30720,
     "tx_sym_is_real": false
 }
