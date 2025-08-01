@@ -227,11 +227,11 @@ def recieve_image(filepath_to_save):
     print("Received Signal:", receive_signal)
     demodulated_signal = digital_demodulation(receive_signal, Constellation.PAM4.value)
     print("Demodulated Signal:", demodulated_signal)
-    uncovered_bitstring = Recovery.REPETITION.value[1](demodulated_signal, 0, 0)
+    uncovered_bitstring = Recovery.REED_SOLOMON.value[1](demodulated_signal, 6624, 0)
     print("Uncovered Bitstring:", uncovered_bitstring)
-    decompressed_bitstring = Compression.HUFFMAN.value[1](uncovered_bitstring)
-    print("Decompressed Bitstring:", decompressed_bitstring)
-    bits_to_image(list(map(int, list(decompressed_bitstring))), (32,32)).save(filepath_to_save)
+    # decompressed_bitstring = Compression.HUFFMAN.value[1](uncovered_bitstring)
+    print("Decompressed Bitstring:", uncovered_bitstring)
+    bitstring_to_file(uncovered_bitstring, filepath_to_save)
 
 
 
@@ -329,4 +329,4 @@ import sys
 
 sys.set_int_max_str_digits(0) # Disable the limit on the number of digits in an integer
 
-recieve_image("./recieved_files/received_image.jpg")
+recieve_image("./recieved_files/received_text.txt")

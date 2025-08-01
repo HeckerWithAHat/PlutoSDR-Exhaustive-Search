@@ -34,9 +34,10 @@ IMAGE_SIZE = (32, 32)
 
 # ---------------------------------------------------------------
 # Create shared system configuration
-# ---------------------------------------------------------------
+# --------------------------------numb-------------------------------
 config = SystemConfiguration.from_file(Path(__file__).parent / "tx_config.json")
-modulation_order = config.modulation_order
+print(f"Loaded configuration: {config}")
+modulation_order = 4
 
 rx_sdr = Pluto("ip:192.168.2.1")  # Uncomment to use different device
 rx = DigitalReceiver(config, rx_sdr)
@@ -51,13 +52,13 @@ rx.set_gain(100)
 # Digital modulation parameters
 
 constellation = get_qam_constellation(modulation_order, Es=1)
-
+print(f"Constellation: {constellation}")
 # Load and prepare image
 img = Image.open(Path(__file__).parent / "tower.png")
 img = img.resize(IMAGE_SIZE)
 img = np.array(img)
 bits = np.unpackbits(img)
-
+print(f"Number of bits: {len(bits)}")
 # Map bits to symbols
 tx_syms, padding = qam_mapper(bits, constellation)
 num_transmit_symbols = len(tx_syms)
@@ -94,6 +95,9 @@ det_rx_syms = det_rx_syms_shuffled
 rx_bits = qam_demapper(det_rx_syms, padding, constellation)
 
 print("")
+
+print(len(tx_syms), "<->", len(det_rx_syms))
+
 
 # Calculate error rates
 ser = calc_symbol_error_rate(tx_syms, det_rx_syms)

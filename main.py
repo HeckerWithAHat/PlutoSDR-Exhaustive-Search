@@ -30,7 +30,7 @@ for filepath in files:
                     results = []
                     times = []
                     
-                    for i in range(1):
+                    for i in range(20):
                         print(f"Trial {i+1} Start")
                         start_time = time.time()
                         try:
@@ -48,6 +48,9 @@ for filepath in files:
                         if diff >=0 and execution_time >= 0:
                             results.append(diff)
                             times.append(execution_time)
+                        else:
+                            print(f"Invalid result or time for trial {i+1}: diff={diff}, time={execution_time}. Skipping this trial.")
+                            continue
 
                     # Calculate averages
                     avg_diff = -1

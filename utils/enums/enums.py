@@ -28,8 +28,8 @@ class Compression(Enum):
     LEMPEL_ZIV = (lempel_ziv_encoding, lempel_ziv_decoding)
 
 class Recovery(Enum):
-    REED_SOLOMON = (reed_solomon_encode, reed_solomon_decode)
     REPETITION = (repetition_encode, repetition_decode)
+    REED_SOLOMON = (reed_solomon_encode, reed_solomon_decode)
     HAMMING = (encode_bitstring_hamming, hamming_decode)
 
 class Constellation(Enum):
