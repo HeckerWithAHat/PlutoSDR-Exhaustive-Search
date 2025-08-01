@@ -82,8 +82,10 @@ bits = np.unpackbits(img)
 # print(type(bits))
 # print(bits[0])
 encoded_bits = Recovery.REED_SOLOMON.value[0](''.join(map(str, bits)))[0]
-bits = np.array(list(encoded_bits))
+bits = np.array(list(map(int, list(encoded_bits))))
 # Map bits to symbols
+print(bits)
+
 tx_syms, padding = qam_mapper(bits, constellation)
 num_transmit_symbols = len(tx_syms)
 print("Number of transmit symbols: ", num_transmit_symbols)
