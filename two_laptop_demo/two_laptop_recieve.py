@@ -44,7 +44,7 @@ IMAGE_SIZE = (32, 32)
 # --------------------------------numb-------------------------------
 config = SystemConfiguration.from_file(Path(__file__).parent / "tx_config.json")
 print(f"Loaded configuration: {config}")
-modulation_order = config.modulation_order  # 4, 16, 64, 256, etc.
+modulation_order = 4
 
 rx_sdr = Pluto("ip:192.168.2.1")  # Uncomment to use different device
 rx = DigitalReceiver(config, rx_sdr)
@@ -66,12 +66,11 @@ img = img.resize(IMAGE_SIZE)
 img = np.array(img)
 bits = np.unpackbits(img)
 bits = np.unpackbits(img)
-before_encode = bits
-encoded_bits = Recovery.REED_SOLOMON.value[0](''.join(map(str, bits)))
-len_og = encoded_bits[1]
-encoded_bits = encoded_bits[0]
-bits = np.array(list(map(int, list(encoded_bits))))
-print(bits)
+
+encoded_bits = Recovery.REPETITION.value[0](''.join(map(str, bits)))[0]
+
+bits = np.array(list(encoded_bits))
+
 print(f"Number of bits: {len(bits)}")
 # Map bits to symbols
 tx_syms, padding = qam_mapper(bits, constellation)
@@ -108,7 +107,7 @@ det_rx_syms = det_rx_syms_shuffled
 # Demap symbols to bits
 rx_bits = qam_demapper(det_rx_syms, padding, constellation)
 print(type(rx_bits))
-uncoded_bits = Recovery.REED_SOLOMON.value[1](''.join(map(str, rx_bits)), len_og , 0)
+uncoded_bits = Recovery.REPETITION.value[1](''.join(map(str, rx_bits)), 0 , 0)
 rx_bits = np.array(list(uncoded_bits))
 
 print("")
@@ -120,7 +119,7 @@ print(len(tx_syms), "<->", len(det_rx_syms))
 ser = calc_symbol_error_rate(tx_syms, det_rx_syms)
 print("Symbol error rate: ", ser)
 
-ber = calc_symbol_error_rate(before_encode, rx_bits)
+ber = calc_symbol_error_rate(bits, rx_bits)
 print("Bit error rate: ", ber)
 
 # ---------------------------------------------------------------
@@ -179,7 +178,6 @@ plt.tight_layout()
 plt.show()
 
 # Plot the received image
-rx_bits = np.array(list(map(int, list(rx_bits))))
 rx_img = np.packbits(rx_bits[: rx_bits.shape[0] - padding]).reshape(img.shape)
 fig, ax = plt.subplots(1, 2, figsize=(12, 6))
 ax[0].imshow(img)
