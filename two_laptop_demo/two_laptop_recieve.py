@@ -65,11 +65,8 @@ img = Image.open(Path(__file__).parent / "tower.png")
 img = img.resize(IMAGE_SIZE)
 img = np.array(img)
 bits = np.unpackbits(img)
-bits = np.unpackbits(img)
-
-encoded_bits = Recovery.REPETITION.value[0](''.join(map(str, bits)))[0]
-
-bits = np.array(list(encoded_bits))
+# encoded_bits = Recovery.REPETITION.value[0](''.join(map(str, bits)))[0]                    <-- Uncomment this line to use repetition code
+# bits = np.array(list(encoded_bits))                                                        <-- Uncomment this line to use repetition code
 
 print(f"Number of bits: {len(bits)}")
 # Map bits to symbols
@@ -106,9 +103,8 @@ det_rx_syms = det_rx_syms_shuffled
 
 # Demap symbols to bits
 rx_bits = qam_demapper(det_rx_syms, padding, constellation)
-print(type(rx_bits))
-uncoded_bits = Recovery.REPETITION.value[1](''.join(map(str, rx_bits)), 0 , 0)
-rx_bits = np.array(list(uncoded_bits))
+# uncoded_bits = Recovery.REPETITION.value[1](''.join(map(str, rx_bits)), 0 , 0)       <-- Uncomment this line to use repetition code
+# rx_bits = np.array(list(uncoded_bits))                                               <-- Uncomment this line to use repetition code
 
 print("")
 

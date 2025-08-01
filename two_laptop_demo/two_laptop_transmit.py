@@ -77,12 +77,9 @@ constellation = get_qam_constellation(modulation_order, Es=1)
 img = Image.open(Path(__file__).parent / "tower.png")
 img = img.resize(IMAGE_SIZE)
 img = np.array(img)
-# print(img)
 bits = np.unpackbits(img)
-# print(type(bits))
-# print(bits[0])
-encoded_bits = Recovery.REPETITION.value[0](''.join(map(str, bits)))[0]
-bits = np.array(list(encoded_bits))
+# encoded_bits = Recovery.REPETITION.value[0](''.join(map(str, bits)))[0]             <-- Uncomment this line to use repetition code
+# bits = np.array(list(encoded_bits))                                                 <-- Uncomment this line to use repetition code
 # Map bits to symbols
 tx_syms, padding = qam_mapper(bits, constellation)
 num_transmit_symbols = len(tx_syms)
