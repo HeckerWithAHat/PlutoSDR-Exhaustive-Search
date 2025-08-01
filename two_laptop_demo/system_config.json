@@ -1,5 +1,5 @@
 {
-    "modulation_order": 4,
+    "modulation_order": 16,
     "sample_rate": 5000000.0,
     "seed": 123456,
     "n_stf_repeat": 32,
@@ -13,11 +13,11 @@
     "pulse_shape_beta": 1,
     "pulse_shape_span": 23,
     "carrier_frequency": 985000000.0,
-    "tx_gain": 100,
+    "tx_gain": 70,
     "rx_gain": 100,
     "rx_buffer_size": 2000000,
     "n_stf_ptf_zero_syms": 300,
     "tx_zero_pad_len": 300,
-    "tx_sym_len": 12288,
-    "tx_sym_is_real": false
+    "tx_sym_len": null,
+    "tx_sym_is_real": null
 }
