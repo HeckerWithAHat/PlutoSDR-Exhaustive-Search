@@ -23,7 +23,7 @@ def reed_solomon_encode(bitstring: str) -> bytes:
     encoded = rsc.encode(data_bytes)
     return [bytes_to_bits(encoded), len(bitstring), 0]
 
-def reed_solomon_decode(encoded_data: str, original_length: int, additional_param) -> str:
+def reed_solomon_decode(encoded_data: str, original_length: int, _) -> str:
     """
     Decodes a Reed-Solomon encoded message.
 
