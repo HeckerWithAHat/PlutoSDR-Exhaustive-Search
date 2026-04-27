@@ -5,22 +5,22 @@ Our Final Project for COSMOS. Exhaustively searches through every combination of
 ## Features
 
 - Compression Algorithms
- - Huffman
- - Lempel-Ziv 
+    * Huffman
+    * Lempel-Ziv 
 - Recovery Algorithms
- - Repetition
- - Hamming
- - Reed-Soloman
+    * Repetition
+    * Hamming
+    * Reed-Soloman
 - Constellation Size
- - 2
- - 4
- - 8
- - 16
+    * 2
+    * 4
+    * 8
+    * 16
 - Repitition Sizes
- - 2
- - 4
- - 6
- - 8
+    * 2
+    * 4
+    * 6
+    * 8
 - Auto-Analysis
 
 ## Getting Started
