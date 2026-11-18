@@ -1,4 +1,4 @@
-from utils.transmission.digital_modulation import digital_modulation, digital_demodulation
+from utils.transmission.digital_modulation import digital_modulation_PAM, digital_demodulation_PAM
 
 from utils.file_to_bitstring import file_to_bitstring, bitstring_to_file
 
@@ -25,7 +25,7 @@ def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Co
     # print("Compressed Bitstring:", compressed_bitstring)
     recovery_added_bitstring = Recovery.value[0](compressed_bitstring)
     # print("Recovery Added Bitstring:", recovery_added_bitstring)
-    modulated_signal = digital_modulation(recovery_added_bitstring[0], Constellation.value)
+    modulated_signal = digital_modulation_PAM(recovery_added_bitstring[0], Constellation.value)
     import numpy as np
     message = np.array(modulated_signal[0])
     # print("Final Message:", message)
@@ -90,7 +90,7 @@ def simulate_SDR(Compression: Compression, Recovery: Recovery, Constellation: Co
     # print("Received Signal:", receive_signal_numpy)
 
 
-    demodulated_signal = digital_demodulation(receive_signal, Constellation.value)
+    demodulated_signal = digital_demodulation_PAM(receive_signal, Constellation.value)
     # print("Demodulated Signal:", demodulated_signal)
     uncovered_bitstring = Recovery.value[1](demodulated_signal, recovery_added_bitstring[1], recovery_added_bitstring[2])
     if uncovered_bitstring is None:

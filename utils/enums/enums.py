@@ -13,8 +13,8 @@ from utils.recovery.reedsolomon import reed_solomon_decode
 from utils.recovery.repitition import repetition_encode
 from utils.recovery.repitition import repetition_decode
 
-from utils.transmission.digital_modulation import digital_modulation
-from utils.transmission.digital_modulation import digital_demodulation
+from utils.transmission.digital_modulation import digital_modulation_PAM
+from utils.transmission.digital_modulation import digital_demodulation_PAM
 
 from utils.transmission.create_message import create_message
 from utils.transmission.create_message import decode_message

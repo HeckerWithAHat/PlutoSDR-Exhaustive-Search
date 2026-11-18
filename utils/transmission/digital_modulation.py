@@ -1,5 +1,5 @@
 import numpy as np
-def digital_modulation(bits, M):
+def digital_modulation_PAM(bits, M):
     """
     Parameters:
         bits - bitstring to convert to a symbol array
@@ -34,7 +34,7 @@ def digital_modulation(bits, M):
     return [symbols, M]
 
 
-def digital_demodulation(symbols, M):
+def digital_demodulation_PAM(symbols, M):
     """
     Parameters:
         symbols - array of symbols to convert back to bits

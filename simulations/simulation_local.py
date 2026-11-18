@@ -1,5 +1,5 @@
-from utils.transmission.digital_modulation import digital_modulation
-from utils.transmission.digital_modulation import digital_demodulation
+from utils.transmission.digital_modulation import digital_modulation_PAM
+from utils.transmission.digital_modulation import digital_demodulation_PAM
 
 from utils.transmission.create_message import create_message
 from utils.transmission.create_message import decode_message
@@ -48,13 +48,13 @@ def simulate_local(Compression: Compression, Recovery: Recovery, Constellation: 
     print("Compressed Bitstring:", compressed_bitstring)
     recovery_added_bitstring = Recovery.value[0](compressed_bitstring[0])
     print("Recovery Added Bitstring:", recovery_added_bitstring)
-    modulated_signal = digital_modulation(recovery_added_bitstring[0], Constellation.value)
+    modulated_signal = digital_modulation_PAM(recovery_added_bitstring[0], Constellation.value)
     print("Modulated Signal:", modulated_signal)
     message = create_message(modulated_signal[0], Repitition.value)
     print("Final Message:", message)
     decoded_message = decode_message(message, Repitition.value)
     print("Decoded Message:", decoded_message)
-    demodulated_signal = digital_demodulation(decoded_message, Constellation.value)
+    demodulated_signal = digital_demodulation_PAM(decoded_message, Constellation.value)
     print("Demodulated Signal:", demodulated_signal)
     uncovered_bitstring = Recovery.value[1](demodulated_signal, recovery_added_bitstring[1], recovery_added_bitstring[2])
     print("Uncovered Bitstring:", uncovered_bitstring)

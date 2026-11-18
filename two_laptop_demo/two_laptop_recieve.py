@@ -44,11 +44,11 @@ IMAGE_SIZE = (32, 32)
 # --------------------------------numb-------------------------------
 config = SystemConfiguration.from_file(Path(__file__).parent / "tx_config.json")
 print(f"Loaded configuration: {config}")
-modulation_order = 4
+modulation_order = config.modulation_order  # 4, 16, 64, 256, etc.
 
 rx_sdr = Pluto("ip:192.168.2.1")  # Uncomment to use different device
 rx = DigitalReceiver(config, rx_sdr)
-rx.set_gain(100)
+rx.set_gain(30)
 
 # Set RF bandwidth
 # tx.tx_rf_bandwidth = rx.rx_rf_bandwidth = int(tx.sample_rate / config.sps) * 2
@@ -65,8 +65,9 @@ img = Image.open(Path(__file__).parent / "tower.png")
 img = img.resize(IMAGE_SIZE)
 img = np.array(img)
 bits = np.unpackbits(img)
-# encoded_bits = Recovery.REPETITION.value[0](''.join(map(str, bits)))[0]                    <-- Uncomment this line to use repetition code
-# bits = np.array(list(encoded_bits))                                                        <-- Uncomment this line to use repetition code
+og_bits = bits.copy()
+encoded_bits = Recovery.REPETITION.value[0](''.join(map(str, bits)))[0]      #              <-- Uncomment this line to use repetition code
+bits = np.array(list(map(int, list(encoded_bits))))                                          #              <-- Uncomment this line to use repetition code
 
 print(f"Number of bits: {len(bits)}")
 # Map bits to symbols
@@ -103,8 +104,8 @@ det_rx_syms = det_rx_syms_shuffled
 
 # Demap symbols to bits
 rx_bits = qam_demapper(det_rx_syms, padding, constellation)
-# uncoded_bits = Recovery.REPETITION.value[1](''.join(map(str, rx_bits)), 0 , 0)       <-- Uncomment this line to use repetition code
-# rx_bits = np.array(list(uncoded_bits))                                               <-- Uncomment this line to use repetition code
+uncoded_bits = Recovery.REPETITION.value[1](''.join(map(str, rx_bits)), 0 , 0)       #              <-- Uncomment this line to use repetition code
+rx_bits = np.array(list(map(int, list(uncoded_bits))))                                               #              <-- Uncomment this line to use repetition code
 
 print("")
 
@@ -115,7 +116,7 @@ print(len(tx_syms), "<->", len(det_rx_syms))
 ser = calc_symbol_error_rate(tx_syms, det_rx_syms)
 print("Symbol error rate: ", ser)
 
-ber = calc_symbol_error_rate(bits, rx_bits)
+ber = calc_symbol_error_rate(og_bits, rx_bits)
 print("Bit error rate: ", ber)
 
 # ---------------------------------------------------------------

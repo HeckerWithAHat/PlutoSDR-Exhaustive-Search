@@ -1,5 +1,5 @@
 from utils.enums.enums import Compression, Recovery, Constellation, Repitition
-from utils.transmission.digital_modulation import digital_modulation, digital_demodulation
+from utils.transmission.digital_modulation import digital_modulation_PAM, digital_demodulation_PAM
 import numpy as np
 
 
@@ -10,9 +10,9 @@ compressed = Compression.HUFFMAN.value[0](bits)
 print("Compressed Bitstring:", compressed)
 recovery_added = Recovery.REPETITION.value[0](compressed)
 print("Recovery Added Bitstring:", recovery_added)
-modulated_signal = digital_modulation(recovery_added[0], Constellation.PAM4.value)
+modulated_signal = digital_modulation_PAM(recovery_added[0], Constellation.PAM4.value)
 print("Final Message:", modulated_signal)
-unmodulated_signal = digital_demodulation(modulated_signal[0], Constellation.PAM4.value)
+unmodulated_signal = digital_demodulation_PAM(modulated_signal[0], Constellation.PAM4.value)
 print("Unmodulated Signal:", unmodulated_signal)
 unrecovered_bitstring = Recovery.REPETITION.value[1](unmodulated_signal, 0, 0)
 print("Unrecovered Bitstring:", unrecovered_bitstring)
